@@ -1,3 +1,5 @@
 # PyFacil
-Python Facility Codes
+Some facilities and utilities for Python.
+Customized for RahyabGroup.
+
 
