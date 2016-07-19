@@ -52,4 +52,4 @@ def tokenize_search_clause(clause):
     criteria = clause.split(',')
     for criterion_pair in criteria:
         # return -> group_by_fields, agg_function, field_name, type, operator, value
-        yield re.search('(?:\[([\w,]+)\]\[(\w+)\])?(\w+)(?:\[(\w+)\])?([<>=!|@.]{1,2})\s?(.+)', criterion_pair).groups()
+        yield re.search('(?:\[([\w,]+)\]\[(\w+)\])?([\w\.]+)(?:\[(\w+)\])?([<>=!|@.]{1,2})\s?(.+)', criterion_pair).groups()
