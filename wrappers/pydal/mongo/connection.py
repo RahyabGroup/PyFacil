@@ -11,13 +11,17 @@ class Connection:
         self.port = port
         self.user_name = user_name
         self.password = password
-        self._mongo_connection = MongoClient(host=host, port=port)
+        if self.user_name:
+            cs = 'mongodb://{username}:{password}@{host}:{port}/admin'
+        else:
+            cs = 'mongodb://{host}:{port}'
+        self._mongo_connection = MongoClient(cs)
 
     def db(self, name):
         mongodb = self._mongo_connection[name]
 
-        if self.user_name and self.password:
-            mongodb.authenticate(self.user_name, self.password)
+        # if self.user_name and self.password:
+        #     mongodb.authenticate(self.user_name, self.password, mechanism='SCRAM-SHA-1')
 
         pydaldb = Db(name, mongodb)
         return pydaldb
