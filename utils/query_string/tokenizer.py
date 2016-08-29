@@ -1,5 +1,6 @@
 from datetime import datetime
 import re
+from bson import ObjectId
 
 from dateutil.parser import parser
 from dateutil.relativedelta import relativedelta
@@ -22,6 +23,8 @@ def evaluate_data(field_type, value):
     # custom data-type
     if field_type == 'sdate':
         return int(parser().parse(value).strftime('%y%m%d'))
+    if field_type == 'oid':
+        return ObjectId(value)
     raise TypeError('Given data type "%s" is not supported!' % field_type)
 
 
