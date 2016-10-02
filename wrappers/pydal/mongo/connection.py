@@ -12,9 +12,10 @@ class Connection:
         self.user_name = user_name
         self.password = password
         if self.user_name:
-            cs = 'mongodb://{username}:{password}@{host}:{port}/admin'
+            cs = 'mongodb://{username}:{password}@{host}:{port}/admin'.format(username=user_name, password=password,
+                                                                              host=host, port=port)
         else:
-            cs = 'mongodb://{host}:{port}'
+            cs = 'mongodb://{host}:{port}'.format(host=host, port=port)
         self._mongo_connection = MongoClient(cs)
 
     def db(self, name):
