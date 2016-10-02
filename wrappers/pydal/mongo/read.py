@@ -20,9 +20,13 @@ class ReadCommand:
 
     def find_one(self, query, fields=[]):
         projection = None
-        if fields:
+        if fields and type(fields) is list:
             fields.append("py/object")
             projection = dict.fromkeys(fields, 1)
+        elif fields and type(fields) is dict:
+            fields = fields.copy()
+            fields.update({"py/object": 1})
+            projection = fields
         document = self._mongo_collection.find_one(query, projection)
         if document is None:
             return None
