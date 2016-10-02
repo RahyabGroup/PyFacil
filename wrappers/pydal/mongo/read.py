@@ -25,7 +25,7 @@ class ReadCommand:
             projection = dict.fromkeys(fields, 1)
         elif fields and type(fields) is dict:
             fields = fields.copy()
-            fields.update({"py/object": 1} )
+            fields.update({"py/object": 1})
             projection = fields
         document = self._mongo_collection.find_one(query, projection)
         if document is None:
