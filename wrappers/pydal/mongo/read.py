@@ -95,6 +95,7 @@ class ReadCommand:
         cmd.update({'limit': take}) if take else None
         cmd.update({'tailable': tailable}) if tailable else None
         cmd.update({'singleBatch': True})
+        cmd.update({'batchSize': 1000})
         docs = self.db_command(cmd)['cursor']['firstBatch']
         if hasattr(docs, '__iter__'):
             return [d if not reduce_by else reduce_by(**d) for d in docs]
