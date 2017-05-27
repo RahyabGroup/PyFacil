@@ -41,11 +41,11 @@ class ChainExecutorBase:
                     for i in self._job_stats.values()]):
                 break
             e = self._task_queue.get(block=True)
-            if self.logger: self.logger.info('queue > consumed : {}'.format(e))
-            self.execute_chains_sequentially(e)
+            if self.logger: self.logger.info('j_elem `{}` picked up.'.format(e))
+            self.execute_chains(e)
         self._executor_pool.shutdown(wait=True)
 
-    def execute_chains_sequentially(self, elem):
+    def execute_chains(self, elem):
         func_name, task_ix = self.task_chain_get_next(elem)
         if func_name:
             func = getattr(self.task_pool_module, func_name)  # func = getattr(sys.modules[__name__], func_name)
@@ -74,17 +74,17 @@ class ChainExecutorBase:
     def post_exec_act(self, f):
         # print(f.result())
         if f.cancelled():
-            if self.logger: self.logger.warning('j_elem {} canceled.'.format(f.elem_name))
+            if self.logger: self.logger.warning('j_elem `{}` canceled.'.format(f.elem_name))
         elif f.done():
             error = f.exception()
             if error:
-                if self.logger: self.logger.error('j_elem {} failed! err_msg: {}'.format(f.elem_name, error))
+                if self.logger: self.logger.error('j_elem `{}` task `{}` failed!\terr_msg: `{}`'.format(f.elem_name, f.func_name, error))
                 self.terminate_phase(self._job_stats[f.elem_name]['job_id'], f.func_name, f.elem_name,
                                      self._job_stats[f.elem_name]['latter_task_tries'], error=str(error))
                 if self._job_stats[f.elem_name]['latter_task_tries'] >= self.retry:
                     return
             else:
-                if self.logger: self.logger.info('j_elem {} done. ret_val: {}'.format(f.elem_name, f.result()))
+                if self.logger: self.logger.info('j_elem `{}` task `{}` done.\tret_val: `{}`'.format(f.elem_name, f.func_name, f.result()))
                 self.terminate_phase(self._job_stats[f.elem_name]['job_id'], f.func_name, f.elem_name,
                                      self._job_stats[f.elem_name]['latter_task_tries'], result=f.result())
                 self._job_stats[f.elem_name]['last_done_task'] = f.func_name
