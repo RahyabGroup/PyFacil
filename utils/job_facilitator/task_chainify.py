@@ -41,7 +41,7 @@ class ChainExecutorBase:
                     for i in self._job_stats.values()]):
                 break
             e = self._task_queue.get(block=True)
-            if self.logger: self.logger.info('j_elem `{}` picked up.'.format(e))
+            if self.logger: self.logger.debug('j_elem `{}` picked up.'.format(e))
             self.execute_chains(e)
         self._executor_pool.shutdown(wait=True)
 
