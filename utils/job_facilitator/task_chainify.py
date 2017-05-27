@@ -78,7 +78,7 @@ class ChainExecutorBase:
         elif f.done():
             error = f.exception()
             if error:
-                if self.logger: self.logger.error('j_elem `{}` task `{}` failed!\terr_msg: `{}`'.format(f.elem_name, f.func_name, error))
+                if self.logger: self.logger.error('j_elem `{}` task `{}` failed!\terr_msg: `{}`'.format(f.elem_name, f.func_name, error), exc_info=1)
                 self.terminate_phase(self._job_stats[f.elem_name]['job_id'], f.func_name, f.elem_name,
                                      self._job_stats[f.elem_name]['latter_task_tries'], error=str(error))
                 if self._job_stats[f.elem_name]['latter_task_tries'] >= self.retry:
